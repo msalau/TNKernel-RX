@@ -139,7 +139,7 @@ _tn_dummy_isr_isp_msg:
 
 _tn_dummy_isr:
 
-	mov.l	#_tn_dummy_isr_func_msg, r1
+	mov.l	#_tn_dummy_isr_msg, r1
 	bsr	_sci2_puts
 
 	;; Print pointer to destination function
@@ -243,7 +243,7 @@ _tn_switch_context_irq_handler:
 	mov.l	#_tn_curr_run_task, r1
 	mov.l	#_tn_next_task_to_run, r2
 	mov.l	[r2], r2
-	mov.l	[r1], r1				    ; If both poiters reference one task - not to do
+	mov.l	[r1], r1				    ; If both pointers reference one task - not to do
 
 	cmp	r1, r2
 	beq.b	_tn_switch_context_irq_handler_rte
