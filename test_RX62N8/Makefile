@@ -115,7 +115,7 @@ $(PROJECT_FILE) : $(OBJS)
 
 %.o : %.S
 	@echo -e "\tAS\t$@"
-	@$(AS) $(ASLAGS) -c $< -o $@
+	@$(AS) $(ASFLAGS) -c $< -o $@
 
 lint:
 	@echo -e "\tLINT\tALL"

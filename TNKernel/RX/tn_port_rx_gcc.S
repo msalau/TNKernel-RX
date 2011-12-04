@@ -272,7 +272,7 @@ _tn_switch_context_irq_handler:
 	mov.l	r3, [r5]
 	;; Set next task as current one
 	mov.l	r6, [r1]
-	;; Restore start pointer
+	;; Restore stack pointer of next task
 	mov.l	[r6], r3
 	mvtc	r3, usp
 
