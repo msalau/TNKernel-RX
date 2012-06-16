@@ -71,7 +71,7 @@
 
 	.equ	TN_ST_STATE_RUNNING,	1
 	
-	;; Bit definitions fo PSW register
+	;; Bit definitions for PSW register
 	
 	.equ	I_BIT_N,	16
 	.equ	I_BIT,		(1 << I_BIT_N)
@@ -186,7 +186,7 @@ _tn_start_exe:
 	mov.l	#TN_ST_STATE_RUNNING, [r1]
 
 	;; Make request for context switch
-	;; IMHO this step is unnessesary, since we initially switch to idle task, and additional context switch will not lead us to timer task
+	;; IMHO this step is unnecessary, since we initially switch to idle task, and additional context switch will not lead us to timer task
 	;; bsr	_tn_switch_context
 
 	;; Reset interrupt stack pointer into initial state
