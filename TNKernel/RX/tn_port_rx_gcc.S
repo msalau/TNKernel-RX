@@ -2,7 +2,7 @@
 ;
 ; TNKernel RTOS port for RX core
 ;
-; Copyright © 2011 Maxim Salov
+; Copyright © 2011, 2012 Maxim Salov
 ; All rights reserved.
 ;
 ; Assembler:   GCC
@@ -92,6 +92,16 @@
 
 _tn_startup_hardware_init:
 
+	pop	r1		; save return address
+	
+	mov.l	#__stack, r2	; get top of RAM
+	mvtc	r2, isp		; set ISP to top of RAM
+	add	#-512, r2	; reserve some space for ISP
+	mvtc	r2, usp		; set USP
+	setpsw	U		; switch to USP
+
+	push.l	r1		; restore return address
+	
 	rts
 
 /* ------------------------------------------------------------------------ */
@@ -390,7 +400,8 @@ _tn_cpu_int_enable:
 _tn_inside_int:
 
 	mvfc	psw, r1
-	and	#IPL_BITS, r1
+	and	#U_BIT, r1
+	bnot	#U_BIT_N, r1
 	rts
 
 /* ------------------------------------------------------------------------ */
