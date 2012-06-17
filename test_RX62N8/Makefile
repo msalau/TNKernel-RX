@@ -26,14 +26,16 @@ all : $(PROJECT_FILE)
 PROJECT_PATH = .
 TNKERNEL_PATH = ../TNKernel
 TNKERNELPORT_PATH = $(TNKERNEL_PATH)/RX
+COMMON_PATH = ../Common_RX62N8
 
-LINKSCRIPT = $(PROJECT_PATH)/RX62N8.ld
+LINKSCRIPT = $(COMMON_PATH)/RX62N8.ld
 
 PREPROCESSORFLAGS = \
 	-I. \
 	-I$(TNKERNEL_PATH) \
 	-I$(TNKERNELPORT_PATH) \
 	-I$(PROJECT_PATH) \
+	-I$(COMMON_PATH) \
 	-DTNKERNEL_PORT_RX \
 	$(END)
 
@@ -90,14 +92,14 @@ OBJS = \
 	$(TNKERNELPORT_PATH)/tn_port_rx.o \
 	$(TNKERNELPORT_PATH)/tn_port_rx_gcc.o \
 	\
-	$(PROJECT_PATH)/crt0.o \
-	$(PROJECT_PATH)/tn_user.o \
+	$(COMMON_PATH)/crt0.o \
+	$(COMMON_PATH)/sci2.o \
+	$(COMMON_PATH)/stdout.o \
+	$(COMMON_PATH)/xprintf.o \
+	$(COMMON_PATH)/hwsetup.o \
 	\
+	$(PROJECT_PATH)/tn_user.o \
 	$(PROJECT_PATH)/test.o \
-	$(PROJECT_PATH)/sci2.o \
-	$(PROJECT_PATH)/stdout.o \
-	$(PROJECT_PATH)/xprintf.o \
-	$(PROJECT_PATH)/hwsetup.o \
 	\
 	$(END)
 
@@ -125,9 +127,9 @@ flash : $(PROJECT_FILE)
 	@$(FLASH_TOOL) -v $<
 
 clean :
-	@rm -f $(OBJS) $(PROJECT_FILE) $(PROJECT_MAP) $(PROJECT_MAP) $(PROJECT_PATH)/*.d $(TNKERNEL_PATH)/*.d $(TNKERNELPORT_PATH)/*.d
+	@rm -f $(OBJS) $(PROJECT_FILE) $(PROJECT_MAP) $(PROJECT_LST) $(PROJECT_PATH)/*.d $(TNKERNEL_PATH)/*.d $(TNKERNELPORT_PATH)/*.d $(COMMON_PATH)/*.d
 
-DEPS=$(wildcard $(TNKERNEL_PATH)/*.d) $(wildcard $(TNKERNELPORT_PATH)/*.d) $(wildcard $(PROJECT_PATH)/*.d)
+DEPS=$(wildcard $(TNKERNEL_PATH)/*.d) $(wildcard $(TNKERNELPORT_PATH)/*.d) $(wildcard $(PROJECT_PATH)/*.d) $(wildcard $(COMMON_PATH)/*.d)
 ifneq ($(DEPS),)
 include $(DEPS)
 endif
