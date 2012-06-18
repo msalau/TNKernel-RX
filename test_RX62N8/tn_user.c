@@ -28,8 +28,6 @@ SUCH DAMAGE.
 #include <tn.h>
 #include <tn_user.h>
 
-static void tn_calc_performance(void);
-
 irq_handler _isr_vectors[256];
 
 //----------------------------------------------------------------------------
@@ -74,28 +72,7 @@ void rtc_irq_handler(void)
 {
 	LED4 ^= 1;
 	tn_tick_int_processing();
-	tn_calc_performance();
 	tn_int_exit();
-}
-
-//----------------------------------------------------------------------------
-// Function to measure system performance
-//----------------------------------------------------------------------------
-
-static void tn_calc_performance(void)
-{
-	static int cnt = 0;
-
-	cnt++;
-	if(cnt == 256)  //-- 1 s
-	{
-		cnt = 0;
-
-		tn_curr_performance = tn_idle_count;
-		tn_idle_count = 0;
-
-		//tn_sem_isignal(&semMeasPrf);  //-- To send result to the host
-	}
 }
 
 //----------------------------------------------------------------------------
