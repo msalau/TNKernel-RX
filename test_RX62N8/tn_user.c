@@ -27,8 +27,7 @@ SUCH DAMAGE.
 #include <yrdkrx62ndef.h>
 #include <tn.h>
 #include <tn_user.h>
-
-irq_handler _isr_vectors[256];
+#include <isr_vectors.h>
 
 //----------------------------------------------------------------------------
 // RTC initialization routine
@@ -67,7 +66,7 @@ void rtc_init(void)
 // RTC periodic interrupt
 //----------------------------------------------------------------------------
 
-__attribute__((interrupt))
+interrupt_attr
 void rtc_irq_handler(void)
 {
 	LED4 ^= 1;

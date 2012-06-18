@@ -93,6 +93,7 @@ OBJS = \
 	$(TNKERNELPORT_PATH)/tn_port_rx_gcc.o \
 	\
 	$(COMMON_PATH)/crt0.o \
+	$(COMMON_PATH)/isr_vectors.o \
 	$(COMMON_PATH)/sci2.o \
 	$(COMMON_PATH)/stdout.o \
 	$(COMMON_PATH)/xprintf.o \
