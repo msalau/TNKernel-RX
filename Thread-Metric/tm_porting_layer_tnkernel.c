@@ -192,8 +192,19 @@ void tm_thread_sleep(int seconds)
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_queue_create(int queue_id)
 {
-    (void)queue_id;
-    return TM_ERROR;
+    TN_DQUE *queue = &tm_queue_array[queue_id];
+    int status;
+
+    queue->id_dque = 0;
+    status = tn_queue_create(queue,
+			     (void**)&tm_queue_memory_area,
+			     TM_TNKERNEL_QUEUE_SIZE
+	);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -201,9 +212,18 @@ int  tm_queue_create(int queue_id)
    the function should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_queue_send(int queue_id, unsigned long *message_ptr)
 {
-    (void)queue_id;
-    (void)message_ptr;
-    return TM_ERROR;
+    TN_DQUE *queue = &tm_queue_array[queue_id];
+    int status;
+
+    for (unsigned int i = 4; i; --i)
+    {
+	status = tn_queue_send(queue, (void*)(*message_ptr++), TN_WAIT_INFINITE);
+	if (TERR_NO_ERR != status)
+	{
+	    return TM_ERROR;
+	}
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -211,9 +231,18 @@ int  tm_queue_send(int queue_id, unsigned long *message_ptr)
    the function should return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_queue_receive(int queue_id, unsigned long *message_ptr)
 {
-    (void)queue_id;
-    (void)message_ptr;
-    return TM_ERROR;
+    TN_DQUE *queue = &tm_queue_array[queue_id];
+    int status;
+
+    for (unsigned int i = 4; i; --i)
+    {
+	status = tn_queue_receive(queue, (void**)(message_ptr++), TN_WAIT_INFINITE);
+	if (TERR_NO_ERR != status)
+	{
+	    return TM_ERROR;
+	}
+    }
+    return TM_SUCCESS;
 }
 
 
