@@ -250,8 +250,16 @@ int  tm_queue_receive(int queue_id, unsigned long *message_ptr)
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_semaphore_create(int semaphore_id)
 {
-    (void)semaphore_id;
-    return TM_ERROR;
+    TN_SEM *semaphore = &tm_semaphore_array[semaphore_id];
+    int status;
+
+    semaphore->id_sem = 0;
+    status = tn_sem_create(semaphore, 1, 1);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -259,8 +267,15 @@ int  tm_semaphore_create(int semaphore_id)
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_semaphore_get(int semaphore_id)
 {
-    (void)semaphore_id;
-    return TM_ERROR;
+    TN_SEM *semaphore = &tm_semaphore_array[semaphore_id];
+    int status;
+
+    status = tn_sem_acquire(semaphore, TN_WAIT_INFINITE);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -268,8 +283,15 @@ int  tm_semaphore_get(int semaphore_id)
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_semaphore_put(int semaphore_id)
 {
-    (void)semaphore_id;
-    return TM_ERROR;
+    TN_SEM *semaphore = &tm_semaphore_array[semaphore_id];
+    int status;
+
+    status = tn_sem_signal(semaphore);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
