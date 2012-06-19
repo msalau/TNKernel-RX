@@ -300,8 +300,20 @@ int  tm_semaphore_put(int semaphore_id)
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_memory_pool_create(int pool_id)
 {
-    (void)pool_id;
-    return TM_ERROR;
+    TN_FMP *memory_pool = &tm_memory_pool_array[pool_id];
+    void *memory_pool_address = &tm_memory_pool_area[pool_id*TM_TNKERNEL_MEMORY_POOL_BLOCK_SIZE*TM_TNKERNEL_MEMORY_POOL_MAX_BLOCKS];
+    int status;
+
+    status = tn_fmem_create(memory_pool,
+			    memory_pool_address,
+			    TM_TNKERNEL_MEMORY_POOL_BLOCK_SIZE,
+			    TM_TNKERNEL_MEMORY_POOL_MAX_BLOCKS
+	);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -310,9 +322,15 @@ int  tm_memory_pool_create(int pool_id)
    should be returned.  */
 int  tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr)
 {
-    (void)pool_id;
-    (void)memory_ptr;
-    return TM_ERROR;
+    TN_FMP *memory_pool = &tm_memory_pool_array[pool_id];
+    int status;
+
+    status = tn_fmem_get(memory_pool, (void**)memory_ptr, TN_WAIT_INFINITE);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
 
 
@@ -321,7 +339,13 @@ int  tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr)
    should be returned.  */
 int  tm_memory_pool_deallocate(int pool_id, unsigned char *memory_ptr)
 {
-    (void)pool_id;
-    (void)memory_ptr;
-    return TM_ERROR;
+    TN_FMP *memory_pool = &tm_memory_pool_array[pool_id];
+    int status;
+
+    status = tn_fmem_release(memory_pool, (void*)memory_ptr);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
 }
