@@ -294,6 +294,21 @@ int  tm_semaphore_put(int semaphore_id)
     return TM_SUCCESS;
 }
 
+/* This function puts the specified semaphore inside interrupt handler.
+   If successful, the function should return TM_SUCCESS.
+   Otherwise, TM_ERROR should be returned.  */
+int  tm_semaphore_iput(int semaphore_id)
+{
+    TN_SEM *semaphore = &tm_semaphore_array[semaphore_id];
+    int status;
+
+    status = tn_sem_isignal(semaphore);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
+}
 
 /* This function creates the specified memory pool that can support one or more
    allocations of 128 bytes.  If successful, the function should

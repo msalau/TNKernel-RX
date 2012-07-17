@@ -4,5 +4,6 @@
 void hardware_init(void);
 void timer_init(void);
 void timer_irq_handler(void);
+void int_12_handler(void);
 
 #endif	// TN_USER_H__

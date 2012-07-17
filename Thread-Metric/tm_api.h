@@ -104,6 +104,7 @@ int    tm_queue_receive(int queue_id, unsigned long *message_ptr);
 int    tm_semaphore_create(int semaphore_id);
 int    tm_semaphore_get(int semaphore_id);
 int    tm_semaphore_put(int semaphore_id);
+int    tm_semaphore_iput(int semaphore_id);
 int    tm_memory_pool_create(int pool_id);
 int    tm_memory_pool_allocate(int pool_id, unsigned char **memory_ptr);
 int    tm_memory_pool_deallocate(int pool_id, unsigned char *memory_ptr);

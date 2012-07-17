@@ -120,7 +120,7 @@ int status;
            the interrupt handler is called from the appropriate software
            interrupt or trap. */
 
-//        asm("trap");  /* This is PowerPC specific.  */
+        asm("int #12");  /* This is RX specific. */
 
         /* We won't get back here until the interrupt processing is complete,
            including the setting of the semaphore from the interrupt 
@@ -149,7 +149,7 @@ void  tm_interrupt_handler(void)
     tm_interrupt_handler_counter++;
 
     /* Put the semaphore from the interrupt handler.  */
-    tm_semaphore_put(0);
+    tm_semaphore_iput(0);
 }
 
 

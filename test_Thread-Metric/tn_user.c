@@ -40,6 +40,7 @@ void hardware_init(void)
     HardwareSetup();
     stdout_init();
     timer_init();
+    _isr_vectors[12] = int_12_handler;
 }
 
 //----------------------------------------------------------------------------
@@ -74,3 +75,19 @@ void timer_irq_handler(void)
 }
 
 //----------------------------------------------------------------------------
+// Weak replacement for interrupt handler
+//----------------------------------------------------------------------------
+__attribute__((weak))
+void tm_interrupt_handler(void)
+{
+}
+
+//----------------------------------------------------------------------------
+// Interrupt handler for software interrupt used in test
+//----------------------------------------------------------------------------
+__attribute__((interrupt))
+void int_12_handler(void)
+{
+    tm_interrupt_handler();
+    tn_int_exit();
+}
