@@ -1,4 +1,3 @@
-
 /******************************************************************************
 * DISCLAIMER
 * Please refer to http://www.renesas.com/disclaimer
@@ -40,8 +39,8 @@ Macro definitions
 #define     CMT0_CLK_SELECT (512)
 
 /* General Values */
-#define		LED_ON          (1)
-#define 	LED_OFF			(0)
+#define		LED_ON          (0)
+#define 	LED_OFF         (1)
 #define 	SET_BIT_HIGH	(1)
 #define 	SET_BIT_LOW		(0)
 #define 	SET_BYTE_HIGH	(0xFF)
