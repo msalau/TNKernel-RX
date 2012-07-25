@@ -2,6 +2,7 @@ PROJECTS = \
 	tm_basic_processing_test.elf \
 	tm_cooperative_scheduling_test.elf \
 	tm_interrupt_processing_test.elf \
+	tm_interrupt_preemption_processing_test.elf \
 	tm_memory_allocation_test.elf \
 	tm_message_processing_test.elf \
 	tm_preemptive_scheduling_test.elf \
@@ -117,6 +118,10 @@ tm_cooperative_scheduling_test.elf : $(OBJS) $(THREADMETRIC_PATH)/tm_cooperative
 	@$(LD) $(LDFLAGS) $^ -o $@ -T $(LINKSCRIPT)
 
 tm_interrupt_processing_test.elf : $(OBJS) $(THREADMETRIC_PATH)/tm_interrupt_processing_test.o
+	@echo -e "\tLD\t$@"
+	@$(LD) $(LDFLAGS) $^ -o $@ -T $(LINKSCRIPT)
+
+tm_interrupt_preemption_processing_test.elf : $(OBJS) $(THREADMETRIC_PATH)/tm_interrupt_preemption_processing_test.o
 	@echo -e "\tLD\t$@"
 	@$(LD) $(LDFLAGS) $^ -o $@ -T $(LINKSCRIPT)
 

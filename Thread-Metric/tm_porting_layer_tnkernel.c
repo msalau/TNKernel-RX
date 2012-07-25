@@ -156,6 +156,22 @@ int  tm_thread_resume(int thread_id)
 }
 
 
+/* This function resumes the specified thread inside interrupt.
+   If successful, the function should return TM_SUCCESS.
+   Otherwise, TM_ERROR should be returned.  */
+int  tm_thread_iresume(int thread_id)
+{
+    TN_TCB *task = &tm_thread_array[thread_id];
+    int status;
+    status = tn_task_iresume(task);
+    if (TERR_NO_ERR != status)
+    {
+	return TM_ERROR;
+    }
+    return TM_SUCCESS;
+}
+
+
 /* This function suspends the specified thread.  If successful, the function should
    return TM_SUCCESS. Otherwise, TM_ERROR should be returned.  */
 int  tm_thread_suspend(int thread_id)

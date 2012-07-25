@@ -42,8 +42,11 @@
 
 /* Define the counters used in the demo application...  */
 
+volatile
 unsigned long   tm_interrupt_preemption_thread_0_counter;
+volatile
 unsigned long   tm_interrupt_preemption_thread_1_counter;
+volatile
 unsigned long   tm_interrupt_preemption_handler_counter;
 
 
@@ -129,6 +132,7 @@ void  tm_interrupt_preemption_thread_1_entry(void)
            interrupt or trap. */
 
 //        asm("trap");  /* This is PowerPC specific.  */
+        asm("int #12");  /* This is RX specific.  */
 
         /* We won't get back here until the interrupt processing is complete,
            including the execution of the higher priority thread made ready
@@ -143,14 +147,14 @@ void  tm_interrupt_preemption_thread_1_entry(void)
 /* Define the interrupt handler.  This must be called from the RTOS trap handler.
    To be fair, it must behave just like a processor interrupt, i.e. it must save
    the full context of the interrupted thread during the preemption processing. */
-void  tm_interrupt_preemption_handler(void)
+void  tm_interrupt_handler(void)
 {
 
     /* Increment the interrupt count.  */
     tm_interrupt_preemption_handler_counter++;
 
     /* Resume the higher priority thread from the ISR.  */
-    tm_thread_resume(0);
+    tm_thread_iresume(0);
 }
 
 
