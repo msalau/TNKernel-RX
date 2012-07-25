@@ -327,6 +327,8 @@ int tn_task_create(TN_TCB * task,             //-- task TCB
                  int option);                       //-- Creation option
 int tn_task_suspend(TN_TCB * task);
 int tn_task_resume(TN_TCB * task);
+int tn_task_isuspend(TN_TCB * task);
+int tn_task_iresume(TN_TCB * task);
 int tn_task_sleep(unsigned long timeout);
 int tn_task_wakeup(TN_TCB * task);
 int tn_task_iwakeup(TN_TCB * task);

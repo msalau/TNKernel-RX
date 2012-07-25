@@ -200,6 +200,90 @@ int tn_task_resume(TN_TCB * task)
 }
 
 //----------------------------------------------------------------------------
+int tn_task_isuspend(TN_TCB * task)
+{
+   TN_INTSAVE_DATA
+   int rc;
+
+#if TN_CHECK_PARAM
+   if(task == NULL)
+      return  TERR_WRONG_PARAM;
+   if(task->id_task != TN_ID_TASK)
+      return TERR_NOEXS;
+#endif
+
+   TN_CHECK_INT_CONTEXT
+
+   tn_idisable_interrupt();
+
+   if(task->task_state & TSK_STATE_SUSPEND)
+      rc = TERR_OVERFLOW;
+   else
+   {
+      if(task->task_state == TSK_STATE_DORMANT)
+         rc = TERR_WSTATE;
+      else
+      {
+         if(task->task_state == TSK_STATE_RUNNABLE)
+         {
+            task->task_state = TSK_STATE_SUSPEND;
+            task_to_non_runnable(task);
+            tn_switch_context();
+            rc = TERR_NO_ERR;
+         }
+         else
+         {
+            task->task_state |= TSK_STATE_SUSPEND;
+            rc = TERR_NO_ERR;
+         }
+      }
+   }
+
+   tn_ienable_interrupt();
+
+   return rc;
+}
+
+//----------------------------------------------------------------------------
+int tn_task_iresume(TN_TCB * task)
+{
+   TN_INTSAVE_DATA
+   int rc;
+
+#if TN_CHECK_PARAM
+   if(task == NULL)
+      return  TERR_WRONG_PARAM;
+   if(task->id_task != TN_ID_TASK)
+      return TERR_NOEXS;
+#endif
+
+   TN_CHECK_INT_CONTEXT
+
+   tn_idisable_interrupt();
+
+   if(!(task->task_state & TSK_STATE_SUSPEND))
+      rc = TERR_WSTATE;
+   else
+   {
+      if(!(task->task_state & TSK_STATE_WAIT)) //- The task is not in the WAIT-SUSPEND state
+      {
+         task_to_runnable(task);
+         tn_switch_context();
+         rc = TERR_NO_ERR;
+      }
+      else  //-- Just remove TSK_STATE_SUSPEND from the task state
+      {
+         task->task_state &= ~TSK_STATE_SUSPEND;
+         rc = TERR_NO_ERR;
+      }
+   }
+
+   tn_ienable_interrupt();
+
+   return rc;
+}
+
+//----------------------------------------------------------------------------
 int tn_task_sleep(unsigned long timeout)
 {
    TN_INTSAVE_DATA
