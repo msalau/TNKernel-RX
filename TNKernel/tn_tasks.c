@@ -202,7 +202,7 @@ int tn_task_resume(TN_TCB * task)
 //----------------------------------------------------------------------------
 int tn_task_isuspend(TN_TCB * task)
 {
-   TN_INTSAVE_DATA
+   TN_INTSAVE_DATA_INT
    int rc;
 
 #if TN_CHECK_PARAM
@@ -247,7 +247,7 @@ int tn_task_isuspend(TN_TCB * task)
 //----------------------------------------------------------------------------
 int tn_task_iresume(TN_TCB * task)
 {
-   TN_INTSAVE_DATA
+   TN_INTSAVE_DATA_INT
    int rc;
 
 #if TN_CHECK_PARAM
