@@ -15,7 +15,7 @@ the ITRON Project web site (http://www.assoc.tron.org/eng/document.html).
  TNKernel is distributed in the source code form free of charge under the FreeBSD-like license.
 
  This is port for YRDKRX62N board. Board contains R5F562N8BDFP, member of Renesas RX600 microcontroller series.
-Port was made for vanilla GCC v4.6.2, Binutils v2.21, NewLib v1.19.0.
+Port was made for vanilla GCC v4.7.1, Binutils v2.22.52, NewLib v1.20.0.
 
 
 Features & known limitations:
@@ -25,7 +25,6 @@ Features & known limitations:
 * Floating point coprocessor status register is not saved for every task. (Is this required at all?)
 * Accumulator value is not saved for every task.
 * "Find first set" function is implemented as a loop. Fixed execution time function may be better.
-* "-mint-register" compiler option is not interpreted as it should be. Full context (R1-R15) is saved and restored for each task.
 
 
 Useful literature:

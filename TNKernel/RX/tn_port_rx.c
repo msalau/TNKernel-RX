@@ -43,14 +43,22 @@ unsigned int * tn_stack_init(void * task_func, void * stack_start, void * param)
    *stk = 0x15151515UL;
    stk--;
    *stk = 0x14141414UL;
+#if _RX_INT_REGISTERS < 1
    stk--;
    *stk = 0x13131313UL;
+#endif
+#if _RX_INT_REGISTERS < 2
    stk--;
    *stk = 0x12121212UL;
+#endif
+#if _RX_INT_REGISTERS < 3
    stk--;
    *stk = 0x11111111UL;
+#endif
+#if _RX_INT_REGISTERS < 4
    stk--;
    *stk = 0x10101010UL;
+#endif
    stk--;
    *stk = 0x09090909UL;
    stk--;

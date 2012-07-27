@@ -12,6 +12,10 @@
 
 #undef  USE_ASM_FFS
 
+#ifndef _RX_INT_REGISTERS
+#define _RX_INT_REGISTERS 0
+#endif
+
 #define align_attr_start
 #define align_attr_end     __attribute__((aligned(0x8)))
 #define naked_attr         __attribute__((naked))

@@ -90,6 +90,53 @@
 
 /* ------------------------------------------------------------------------ */
 
+	;; _RX_INT_REGISTERS defines number of registers reserved exclusively for fast interrupt handler.
+	;; Number of registers can be from 0 (no registers) to 4 (r10-r13).
+	
+#ifndef _RX_INT_REGISTERS
+#define _RX_INT_REGISTERS 0
+#endif
+
+.macro context_save
+#if _RX_INT_REGISTERS > 0
+
+#if _RX_INT_REGISTERS >= 4
+	pushm	r1-r9
+#elif _RX_INT_REGISTERS >= 3
+	pushm	r1-r10
+#elif _RX_INT_REGISTERS >= 2
+	pushm	r1-r11
+#elif _RX_INT_REGISTERS >= 1
+	pushm	r1-r12
+#endif
+	pushm	r14-r15
+
+#else // _RX_INT_REGISTERS > 0
+	pushm	r1-r15
+#endif // _RX_INT_REGISTERS > 0
+.endm
+
+.macro context_restore
+#if _RX_INT_REGISTERS > 0
+
+	popm	r14-r15
+#if _RX_INT_REGISTERS >= 4
+	popm	r1-r9
+#elif _RX_INT_REGISTERS >= 3
+	popm	r1-r10
+#elif _RX_INT_REGISTERS >= 2
+	popm	r1-r11
+#elif _RX_INT_REGISTERS >= 1
+	popm	r1-r12
+#endif
+
+#else // _RX_INT_REGISTERS > 0
+	popm	r1-r15
+#endif // _RX_INT_REGISTERS > 0
+.endm
+
+/* ------------------------------------------------------------------------ */
+
 _tn_startup_hardware_init:
 
 	pop	r1		; save return address
@@ -218,7 +265,7 @@ _tn_start_exe:
 
 	;; Read task context
 	setpsw	U
-	popm	r1-r15					    ; Restore context of new task
+	context_restore
 	;; Switch back to interrupt stack
 	clrpsw	U
 
@@ -264,7 +311,7 @@ _tn_switch_context_irq_handler:
 
 	;; Save task context
 	setpsw	U					    ; Switch to the stack of previous task
-	pushm	r1-r15					    ; Save context
+	context_save
 
 	;; Save PC and PSW of current task (located on top of isp) into task stack (usp)
 	clrpsw	U
@@ -294,7 +341,7 @@ _tn_switch_context_irq_handler:
 
 	;; Read task context
 	setpsw	U
-	popm	r1-r15					    ; Restore context of new task
+	context_restore
 	;; Switch back to interrupt stack
 	clrpsw	U
 
