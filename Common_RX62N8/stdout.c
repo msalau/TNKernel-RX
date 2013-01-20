@@ -25,7 +25,6 @@ int puts (const char *s)
 	TN_INTSAVE_DATA;
 	tn_disable_interrupt();
 	int ret = sci2_puts(s);
-	sci2_putchar('\n');
 	tn_enable_interrupt();
 	return ret;
 }

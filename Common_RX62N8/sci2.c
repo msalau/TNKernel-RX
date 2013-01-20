@@ -58,6 +58,7 @@ int sci2_puts (const char *s)
 		++ret;
 		++s;
 	}
+	sci2_putchar('\n');
 	return ret;
 }
 
