@@ -36,20 +36,14 @@ void sci2_init (void)
 	IEN(SCI2, TXI2) = 0;
 	IEN(SCI2, ERI2) = 0;
 	IEN(SCI2, TEI2) = 0;
+	SCI2.SCR.BIT.TIE = 1;				    /* Enable TX interrupt flag */
 	for (int i = 20000ul; i > 0; --i) asm volatile ("");  /* Wait at least one bit interval */
 	SCI2.SCR.BIT.TE = 1;				    /* Enable transmitter */
-	SCI2.SCR.BIT.TIE = 1;				    /* Enable TX interrupt flag */
-	for (int i = 200000ul; i > 0; --i) asm volatile ("");  /* Wait at least one bit interval */
-	IR(SCI2, TXI2) = 1;
 }
 
 int sci2_putchar (int c)
 {
-#if 0
 	while (0 == IR(SCI2, TXI2));
-#else
-	while (0 == SCI2.SSR.BIT.TEND);
-#endif
 	IR(SCI2, TXI2) = 0;
 	SCI2.TDR = c;
 	return (unsigned char)c;
