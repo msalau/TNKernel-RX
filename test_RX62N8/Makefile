@@ -5,8 +5,8 @@ PROJECT_MAP = $(PROJECT).map
 PROJECT_LST = $(PROJECT).lst
 
 TOOL_PATH = /opt/rx-elf/bin
-TOOL_PREFIX = $(TOOL_PATH)/rx-elf
-#TOOL_PREFIX = rx-elf
+#TOOL_PREFIX = $(TOOL_PATH)/rx-elf
+TOOL_PREFIX = rx-elf
 
 CC = $(TOOL_PREFIX)-gcc
 CXX = $(TOOL_PREFIX)-g++

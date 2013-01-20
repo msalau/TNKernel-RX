@@ -10,8 +10,8 @@ PROJECTS = \
 	$(END)
 
 TOOL_PATH = /opt/rx-elf/bin
-TOOL_PREFIX = $(TOOL_PATH)/rx-elf
-#TOOL_PREFIX = rx-elf
+#TOOL_PREFIX = $(TOOL_PATH)/rx-elf
+TOOL_PREFIX = rx-elf
 
 CC = $(TOOL_PREFIX)-gcc
 CXX = $(TOOL_PREFIX)-g++
